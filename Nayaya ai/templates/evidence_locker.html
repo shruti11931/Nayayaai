@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-8">
+    <h1 class="text-2xl font-bold mb-6">Evidence Locker</h1>
+    
+    {% if not locker %}
+        <p class="text-gray-500">No evidence found in the system.</p>
+    {% else %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for fir_no, data in locker.items() %}
+            <div class="bg-white p-4 rounded-xl shadow border">
+                <h3 class="font-bold text-blue-600">FIR: {{ fir_no }}</h3>
+                <p class="text-sm text-gray-600 mb-4">Complainant: {{ data.complainant }}</p>
+                <div class="space-y-2">
+                    {% for file in data.files %}
+                    <div class="flex justify-between items-center bg-gray-50 p-2 rounded">
+                        <span class="text-xs truncate w-32">{{ file.name }}</span>
+                        <a href="{{ file.url }}" target="_blank" class="text-blue-500 text-xs font-bold">VIEW</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

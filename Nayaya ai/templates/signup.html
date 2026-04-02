@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <form class="login-form">
+            <h2>Create Account</h2>
+            <p>Join us today! It only takes a minute.</p>
+            
+            <div class="input-group">
+                <label for="role">Role</label>
+                <select id="role" required>
+                    <option value="">Select your role</option>
+                    <option value="police">Police</option>
+                    <option value="citizen">Citizen</option>
+                    <option value="lawyer">Lawyer</option>
+                    <option value="judge">Judge</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" placeholder="John Doe" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="example@mail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a password" required>
+            </div>
+
+            <div class="input-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="Repeat your password" required>
+            </div>
+
+        <form class="login-form" id="signupForm">
+            <h2>Create Account</h2>
+            <p>Join us today! It only takes a minute.</p>
+            
+            <div class="input-group">
+                <label for="role">Role</label>
+                <select id="role" required>
+                    <option value="">Select your role</option>
+                    <option value="police">Police</option>
+                    <option value="citizen">Citizen</option>
+                    <option value="lawyer">Lawyer</option>
+                    <option value="judge">Judge</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" placeholder="John Doe" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="example@mail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a password" required>
+            </div>
+
+            <div class="input-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="Repeat your password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Sign Up</button>
+            
+            <div id="message"></div>
+            
+            <div class="form-footer">
+                <span>Already have an account? <a href="/login">Login</a></span>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                document.getElementById('message').innerHTML = '<p style="color: red;">Passwords do not match</p>';
+                return;
+            }
+            
+            const data = {
+                fullname: document.getElementById('fullname').value,
+                email: document.getElementById('email').value,
+                password: password,
+                role: document.getElementById('role').value
+            };
+            
+            fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.error) {
+                    document.getElementById('message').innerHTML = '<p style="color: red;">' + result.error + '</p>';
+                } else {
+                    document.getElementById('message').innerHTML = '<p style="color: green;">' + result.message + '<br>Your Unique ID: ' + result.unique_id + '</p>';
+                    // Redirect to login after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                document.getElementById('message').innerHTML = '<p style="color: red;">An error occurred. Please try again.</p>';
+            });
+        });
+    </script>
+</body>
+</html>
